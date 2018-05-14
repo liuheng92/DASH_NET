@@ -1,0 +1,95 @@
+{
+  "config": {
+    "in_intf":"eno1",
+    "out_intf":"enx000ec6de8983"
+  },
+  "events": [
+    {
+      "time": 0,
+      "type": "editLink",
+      "params": {
+        "link": "link1",
+        "bw": 0.5
+      }
+    },
+    {
+      "time": 30,
+      "type": "editLink",
+      "params": {
+        "link": "link1",
+        "bw": 3
+      }
+    },
+    {
+      "time": 45,
+      "type": "editLink",
+      "params": {
+        "link": "link1",
+        "bw": 1
+      }
+    },
+      {
+    "time": 50,
+    "type": "editLink",
+    "params": {
+      "link": "link1",
+      "bw": 10,
+      "delay": 100
+    }
+  },
+  {
+    "time": 55,
+    "type": "editLink",
+    "params": {
+      "link": "link1",
+      "loss": 100
+    }
+  },
+    {
+      "time": 60,
+      "type": "editLink",
+      "params": {
+        "link": "link1",
+        "bw": 10
+      }
+    },
+    {
+      "time": 65,
+      "type": "editLink",
+      "params": {
+        "link": "link1",
+        "loss": 100
+      }
+    },
+    {
+      "time": 70,
+      "type": "editLink",
+      "params": {
+        "link": "link1",
+        "bw": 2
+      }
+    },
+    {
+      "time": 75,
+      "type": "editLink",
+      "params": {
+        "link": "link1",
+        "bw": 0.5
+      }
+    },
+    {
+      "time": 100,
+      "type": "editLink",
+      "params": {
+        "link": "link1",
+        "bw": 3
+      }
+    },
+    {
+      "time": 105,
+      "type": "stop",
+      "params": {
+      }
+    }
+  ]
+}
