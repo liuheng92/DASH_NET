@@ -1,0 +1,85 @@
+[
+ {
+    "time": 0,
+    "type": "editLink",
+    "params": {
+      "src": "h1",
+      "dst": "s1",
+      "bw": 1000
+    }
+  },
+  {
+    "time": 2,
+    "type": "iperf",
+    "params": {
+      "src": "h1",
+      "dst": "h2",
+      "protocol": "UDP",
+      "bw": 50000000,
+      "duration": 25
+    }
+  },
+  {
+    "time": 2,
+    "type": "iperf",
+    "params": {
+      "src": "h2",
+      "dst": "h1",
+      "duration": 25
+    }
+  },
+  {
+    "time": 4,
+    "type": "ping",
+    "params": {
+      "src": "h2",
+      "dst": "h1",
+      "count": 12
+    }
+  },
+  {
+    "time": 5,
+    "type": "editLink",
+    "params": {
+      "src": "h1",
+      "dst": "s1",
+      "bw": 50
+    }
+  },
+  {
+    "time": 10,
+    "type": "editLink",
+    "params": {
+      "src": "h1",
+      "dst": "s1",
+      "bw": 100,
+      "delay": 100
+    }
+  },
+  {
+    "time": 15,
+    "type": "editLink",
+    "params": {
+      "src": "h1",
+      "dst": "s1",
+      "loss": 100
+    }
+  },
+  {
+    "time": 20,
+    "type": "editLink",
+    "params": {
+      "src": "h1",
+      "dst": "s1",
+      "loss": 0,
+      "bw": 500,
+      "delay": 0
+    }
+  },
+  {
+    "time": 30,
+    "type": "stop",
+    "params": {
+    }
+  }
+]
