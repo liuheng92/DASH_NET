@@ -54,27 +54,11 @@
       }
     },
     {
-      "time": 65,
-      "type": "editLink",
-      "params": {
-        "link": "link1",
-        "loss": 100
-      }
-    },
-    {
       "time": 70,
       "type": "editLink",
       "params": {
         "link": "link1",
         "bw": 2
-      }
-    },
-    {
-      "time": 75,
-      "type": "editLink",
-      "params": {
-        "link": "link1",
-        "bw": 0.5
       }
     },
     {

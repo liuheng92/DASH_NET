@@ -1,7 +1,7 @@
-Minievents: A mininet Framework to define events in mininet networks
+Dash-net:A class use minievents to introduce an topo for dash test or network speed control.
 ========================================================
 
-Minievents 2.2.0
+depend on Minievents(Mininet) 2.2.0
 
 ## What is Mininet?
 
@@ -25,35 +25,29 @@ Events in Minievents are defined in an external json document.
 Up to now the implemented events are TCP and UDP traffic (iperf) and link 
 properties modification (delay, bandwidth).
 
-## How to use Minievents?
-Minievents is a child class of Mininet class. It adds events_file argument
-to specify the json event document. There is no Minievent CLI up to now.
+## How to config and run?
+### config
 
-### Simple Example
 
-The __main__ of the minievents.py provides a simple example of Minievents framework.
-It is a single switch topology with two host.
+
+### run
 Just run from the project root directory:
 
-  `sudo python mininet/minievents.py`
+  `sudo python dashnettopo.py`
 
-This command will use *mininet/minievents.json* as event source file.
-The events define a UDP and TCP streams starting at second 2, and the link between h1 and s1
-is modified at second 5 (50 Mbps bandwidth), at second 10 (100 Mbps bandwidth and 100 ms delay), 
-second 15 (100 % loss) and second 20 (0% loss and 500 Mbps bandwidth). The network is stopped at
-second 30.
- 
-#### Check results
-Next Graphs are generated with data extracted from iperf output:
-![iperf TCP bandwidth](https://raw.githubusercontent.com/cgiraldo/minievents/master/output/tcp-bw.png)
+This command will use *dash_minievents.json* as event source file.
+The source file have two big part :
+one is about two networkcards name, in_intf represents the card which connect to internet
+or local net,(you should use ifconfig to checkout your networkcards name and modify the first part)
+other part is defining events. 
+The events define a network speed limit starting at second 0 (0.5Mbps bandwidth), and  modified at second 5 (50 Mbps bandwidth), at second 30 (3 Mbps bandwidth), second 45 (1Mbps bandwidth) and second 50 (10Mbps and 100ms delay) and second 55 (100% loss) and second 60 (10Mbps bandwidth) and second 70 (2Mbps bandwidth) and second 70 (3Mbps bandwidth). The network is stopped at second 105.
 
 ## Json event file format and events
-The minievents.json is an example of the json definition of events for minievents 
+The dash_minievents.json is an example of the json definition of events for minievents 
 Framework. The file should be an array of Json objets (the events) with the following members:
 
 * time: time in seconds since launch when the event should happen.
 * type: event type. Up to now, the following event types are present
-  * iperf: data traffic generator
   * editLink: edit Link properties.
   * stop: stop the network
 * params: parameters for the event.
@@ -61,26 +55,14 @@ Framework. The file should be an array of Json objets (the events) with the foll
 The events are:
 
 The *editLink* event modifies the properties of a link and takes the next parameters:
-* src: name of the source node of the link
-* dst: name of the destination node of the link.
+* link: virtual link between node and switch
 * loss: percentage of packet loss in the link
 * bw: link bandwidth in Mbits/sec
 * delay: in milliseconds
-* (...) It should work with any of the config parameters of the Mininet TCIntf class.
-
-The *iperf* event  creates a traffic stream between two hosts (TCP or UDP) and takes the next parameters:
-* src: name of the source node
-* dst: name of the destination node
-* protocol: L4 protocol, should be TCP (default) or UDP.
-* duration: duration of the traffic stream in seconds.
-* bw (for UDP only): transmission in bits/sec.
-
-The *iperf* client and server process outputs to the files:
-`output/iperf-{TCP-UDP}-{client|server}-{src}-{dst}.txt`
 
 ## Authoring
 
-* Carlos Giraldo
-AtlantTIC Research Center, University of Vigo, Spain
-http://atlanttic.uvigo.es/en/
+* Michael liu
+Sina Weibo
+michaelliubnu@163.com
 
