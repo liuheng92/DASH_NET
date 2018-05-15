@@ -62,9 +62,8 @@ The *editLink* event modifies the properties of a link and takes the next parame
 * bw: link bandwidth in Mbits/sec
 * delay: in milliseconds
 
-## Authoring
+## Author
 
-* Michael liu
-Sina Weibo
+* Michael liu(Sina Weibo)
 michaelliubnu@163.com
 
