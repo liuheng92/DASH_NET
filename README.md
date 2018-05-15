@@ -27,7 +27,8 @@ properties modification (delay, bandwidth).
 
 ## How to config and run?
 ### config
-
+Cause it is related to hardware config, so please see my blog 
+https://www.jianshu.com/p/c0cecf819eab
 
 
 ### run
