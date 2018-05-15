@@ -64,9 +64,6 @@ The *editLink* event modifies the properties of a link and takes the next parame
 
 ## Author
 
-* Michael liu
-
-Sina Weibo
-
+* Michael liu(Sina Weibo)
 michaelliubnu@163.com
 
