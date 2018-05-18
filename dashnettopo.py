@@ -8,12 +8,14 @@ It will launch mininet and perform the events at the specific time of each event
 import re
 import json
 import argparse
+import time
 from minievents import Minievents
 from mininet.log import setLogLevel, info, error
 from mininet.clean import cleanup, sh
 from mininet.util import quietRun, errRun
 from mininet.link import Intf, TCLink
 from mininet.node import Node
+from testspeed  import Testspeed
 
 class Dashnettopo( object ):
 
@@ -23,6 +25,11 @@ class Dashnettopo( object ):
         self.link1 = None
         self.in_intf = str(config_json['in_intf'])
         self.out_intf = str(config_json['out_intf'])
+
+    def get_input_intf(self):
+        return self.in_intf
+    def get_output_intf(self):
+        return self.out_intf
 
     #Recommend: use before restart your program
     #Cleanup Mininet and OpenFlow
@@ -100,7 +107,6 @@ class Dashnettopo( object ):
 
     #test dhcp if it can start(0:yes, 1:no)
     def test_dhcp(self):
-        self.kill_dhcp()
         (out, err, returncode) = errRun('dhcpd')
         if returncode:
             error('\n##### dhcpd error! #####\n')
@@ -165,24 +171,36 @@ class Dashnettopo( object ):
 
     def start(self):
         #1.clean all the config
+        info('#1.clean all the config\n')
         self.cleanup_mn()
+        self.kill_dhcp()
         #2.create dashnet topo
+        info('#2.create dashnet topo\n')
         self.define_dashnet_topo()
         #3.configure dhcp for local net IP address
+        info('#3.configure dhcp for local net IP address\n')
         self.config_dhcp_subnet()
         #4.configure dhcp for virtual interface
+        info('#4.configure dhcp for virtual interface\n')
         self.config_dhcp_intf()
         node_intfname = self.get_node_intfname()
         # TODO(michael):ugly ip address
         self.cmd('ifconfig %s 192.168.1.1/24' % node_intfname)
         #5.configure NAT
+        info('#5.configure NAT\n')
         self.config_nat()
         #6.start dhcpd
+        info('#6.start dhcpd\n')
         if self.test_dhcp():
             exit(1)
         self.cmd('dhcpd %s' % node_intfname)
         #7.start minievents
+        info('#7.start minievents\n')
         self.net.start()
+        #8.clean
+        time.sleep(5)
+        info('#8.clean')
+        self.kill_dhcp()
 
 def load_dash_minievents(json_path=None):
     if json_path:
@@ -195,10 +213,21 @@ def load_dash_minievents(json_path=None):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--events", default="dash_minievents.json", help="json file with event descriptions")
+    parser.add_argument("--output", default="speed_output.txt", help="output file for saving interface speed")
     args = parser.parse_args()
+
+    setLogLevel('info')
+
     json_file = load_dash_minievents(args.events)
     net = Minievents(topo=None, build = False, events_json=json_file['events'])
+
     dnt = Dashnettopo(net, config_json=json_file['config'])
-    setLogLevel('info')
+
+    #start a new thread for checkout network speed
+    #TODO(michael):not sure. If this operation will efect network control(caused by GIL)
+    ts = Testspeed('test speed thread', dnt.get_output_intf(), args.output)
+    ts.setDaemon(True)
+
+    ts.start()
     dnt.start()
-    dnt.kill_dhcp()
+    info('dash net end###############\n')

@@ -21,7 +21,7 @@
       }
     },
     {
-      "time": 45,
+      "time": 60,
       "type": "editLink",
       "params": {
         "link": "link1",
@@ -29,7 +29,7 @@
       }
     },
       {
-    "time": 50,
+    "time": 90,
     "type": "editLink",
     "params": {
       "link": "link1",
@@ -38,7 +38,7 @@
     }
   },
   {
-    "time": 55,
+    "time": 100,
     "type": "editLink",
     "params": {
       "link": "link1",
@@ -46,15 +46,7 @@
     }
   },
     {
-      "time": 60,
-      "type": "editLink",
-      "params": {
-        "link": "link1",
-        "bw": 10
-      }
-    },
-    {
-      "time": 70,
+      "time": 110,
       "type": "editLink",
       "params": {
         "link": "link1",
@@ -62,15 +54,7 @@
       }
     },
     {
-      "time": 100,
-      "type": "editLink",
-      "params": {
-        "link": "link1",
-        "bw": 3
-      }
-    },
-    {
-      "time": 105,
+      "time": 150,
       "type": "stop",
       "params": {
       }
