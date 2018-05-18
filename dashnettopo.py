@@ -1,5 +1,5 @@
 """
-author: Michael liu (michaelliubnu@163.com)
+author: Michael liu (michaelliu92@163.com)
 Dashnettopo is a class use minievents to introduce an topo for dash test or network speed control.
 Using a json document to input two network cards and events.
 Events include (bandwidth, loss, delay).

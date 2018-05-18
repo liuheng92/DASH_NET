@@ -1,5 +1,5 @@
 '''
-author: Michael liu (michaelliubnu@163.com)
+author: Michael liu (michaelliu92@163.com)
 new thread for checking the download packet speed of the specified network card
 '''
 import os
