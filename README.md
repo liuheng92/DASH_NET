@@ -1,4 +1,4 @@
-Dash-net:A class use minievents to introduce an topo for dash test or network speed control.
+DASH_NET:A class use minievents to introduce an topo for dash test or network speed control.
 ========================================================
 
 depend on Minievents(Mininet) 2.2.0
@@ -42,7 +42,8 @@ The source file have two big part :
 one is about two networkcards name, in_intf represents the card which connect to internet
 or local net,(you should use ifconfig to checkout your networkcards name and modify the first part)
 other part is defining events. 
-The events define a network speed limit starting at second 0 (0.5Mbps bandwidth), and  modified at second 5 (50 Mbps bandwidth), at second 30 (3 Mbps bandwidth), second 45 (1Mbps bandwidth) and second 50 (10Mbps and 100ms delay) and second 55 (100% loss) and second 60 (10Mbps bandwidth) and second 70 (2Mbps bandwidth) and second 70 (3Mbps bandwidth). The network is stopped at second 105.
+The events define a network speed limit starting at second 0 (0.5Mbps bandwidth), and  modified at second 30 (3 Mbps bandwidth), at second 60 (1 Mbps bandwidth), second 90 (10Mbps and 100ms delay) and second 100 (100% loss) and second 110 (2Mbps bandwidth). The network is stopped at second 150. 
+The results are in speed_output folder.
 
 ## Json event file format and events
 The dash_minievents.json is an example of the json definition of events for minievents 
