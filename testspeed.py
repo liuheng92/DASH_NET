@@ -11,10 +11,8 @@ from subprocess import ( Popen, PIPE )
 #save realtime network speed
 realtime_q = Queue.Queue(0)
 
-#save setting network speed
-setting_q = Queue.Queue(0)
-
 def sh( cmd ):
+
     "Print a command and send it to the shell"
     return Popen( [ '/bin/sh', '-c', cmd ], stdout=PIPE ).communicate()[ 0 ]
 

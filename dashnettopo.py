@@ -16,6 +16,7 @@ from mininet.util import quietRun, errRun
 from mininet.link import Intf, TCLink
 from mininet.node import Node
 from testspeed  import Testspeed
+from drawspeed import Drawspeed, change_shut_down, get_shut_down
 
 class Dashnettopo( object ):
 
@@ -197,8 +198,12 @@ class Dashnettopo( object ):
         #7.start minievents
         info('#7.start minievents\n')
         self.net.start()
-        #8.clean
+
+        #8.task end, shut down draw speed thread
+        if not get_shut_down():
+            change_shut_down()
         time.sleep(5)
+        #8.clean
         info('#8.clean')
         self.kill_dhcp()
 
@@ -214,6 +219,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--events", default="dash_minievents.json", help="json file with event descriptions")
     parser.add_argument("--output", default="speed_output.txt", help="output file for saving interface speed")
+    parser.add_argument("--imagename", default="speed.png", help="output image for network speed")
     args = parser.parse_args()
 
     setLogLevel('info')
@@ -228,6 +234,12 @@ if __name__ == '__main__':
     ts = Testspeed('test speed thread', dnt.get_output_intf(), args.output)
     ts.setDaemon(True)
 
+    #start a new thread for checkout network speed
+    #TODO(michael):not sure. If this operation will efect network control(caused by GIL)
+    ds = Drawspeed('draw speed thread', args.imagename)
+    ds.setDaemon(True)
+
     ts.start()
+    ds.start()
     dnt.start()
     info('dash net end###############\n')
