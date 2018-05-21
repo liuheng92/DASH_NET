@@ -7,15 +7,15 @@ import matplotlib.pyplot as plt
 from testspeed import realtime_q
 from mininet.log import info
 
-shut_down = False
+shut_down_draw = False
 
-def get_shut_down():
-    global shut_down
-    return shut_down
+def get_shut_down_draw():
+    global shut_down_draw
+    return shut_down_draw
 
-def change_shut_down():
-    global shut_down
-    shut_down = not shut_down
+def change_shut_down_draw():
+    global shut_down_draw
+    shut_down_draw = not shut_down_draw
 
 class Drawspeed(threading.Thread):
     def __init__(self, thread_name, imagename):
@@ -27,21 +27,26 @@ class Drawspeed(threading.Thread):
         realtime_q_draw_x = []
         realtime_q_draw_y = []
         info('draw_realtime_speed start\n')
-        if os.path.exists(self.imagename):
-            os.remove(self.imagename)
-        global shut_down
-        while not shut_down:
+        global shut_down_draw
+        image_count = 0
+        while not shut_down_draw:
             if not realtime_q.empty():
                 [t, s] = realtime_q.get(block=True)
                 realtime_q_draw_x.append(t)
                 realtime_q_draw_y.append(s)
             plt.ion()
-            plt.xlabel('s')
-            plt.ylabel('Kbps')
+            plt.xlabel('time(seconds)')
+            plt.ylabel('realtime speed(Kbps)')
             plt.plot(realtime_q_draw_x, realtime_q_draw_y, 'r')
             plt.pause(0.05)
+            #almost 10min refresh figure and save image
+            if len(realtime_q_draw_y)>600 and len(realtime_q_draw_x)>600:
+                realtime_q_draw_x = []
+                realtime_q_draw_y = []
+                image_count += 1
+                plt.savefig(self.imagename+str(image_count)+'.png')
             # plt.show()
-        plt.savefig(self.imagename)
+        plt.savefig(self.imagename+str(image_count)+'.png')
         plt.close()
 
     def run(self):

@@ -11,6 +11,16 @@ from subprocess import ( Popen, PIPE )
 #save realtime network speed
 realtime_q = Queue.Queue(0)
 
+shut_down_test = False
+
+def get_shut_down_test():
+    global shut_down_test
+    return shut_down_test
+
+def change_shut_down_test():
+    global shut_down_test
+    shut_down_test = not shut_down_test
+
 def sh( cmd ):
 
     "Print a command and send it to the shell"
@@ -33,7 +43,8 @@ class Testspeed(threading.Thread):
 
         with open(self.file, 'a') as f:
             f.write('(0, 0)\n')
-        while True:
+        global shut_down_test
+        while not shut_down_test:
             pre = sh("ifconfig %s | grep bytes | awk '{ print $6 }' | awk -F ':' '{ print $2 }'" % self.intf_name)
             time.sleep(1)
             temp_time += 1
@@ -42,6 +53,7 @@ class Testspeed(threading.Thread):
                 #unit Kbit/s
                 realtime_speed = (float(pro)-float(pre))*8/1024
                 realtime_q.put([temp_time, realtime_speed])
+                info(str(temp_time)+'s ')
                 info(str(realtime_speed)+'Kbit/s\n')
                 with open(self.file, 'a') as f:
                     f.write('(%s, %s)\n' % (temp_time, realtime_speed))

@@ -9,14 +9,15 @@ import re
 import json
 import argparse
 import time
+import signal
 from minievents import Minievents
 from mininet.log import setLogLevel, info, error
 from mininet.clean import cleanup, sh
 from mininet.util import quietRun, errRun
 from mininet.link import Intf, TCLink
 from mininet.node import Node
-from testspeed  import Testspeed
-from drawspeed import Drawspeed, change_shut_down, get_shut_down
+from testspeed  import Testspeed, change_shut_down_test, get_shut_down_test
+from drawspeed import Drawspeed, change_shut_down_draw, get_shut_down_draw
 
 class Dashnettopo( object ):
 
@@ -198,13 +199,16 @@ class Dashnettopo( object ):
         #7.start minievents
         info('#7.start minievents\n')
         self.net.start()
-
         #8.task end, shut down draw speed thread
-        if not get_shut_down():
-            change_shut_down()
+        info('#8.task end, shut down draw speed thread')
         time.sleep(5)
-        #8.clean
-        info('#8.clean')
+        if not get_shut_down_draw():
+            change_shut_down_draw()
+        if not get_shut_down_test():
+            change_shut_down_test()
+        time.sleep(2)
+        #9.clean
+        info('#9.clean')
         self.kill_dhcp()
 
 def load_dash_minievents(json_path=None):
@@ -215,31 +219,45 @@ def load_dash_minievents(json_path=None):
         error('must input dash_minievents.json !')
         exit(1)
 
+def quit():
+    if not get_shut_down_draw():
+        change_shut_down_draw()
+    if not get_shut_down_test():
+        change_shut_down_test()
+    time.sleep(1)
+    info('stop main thread')
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--events", default="dash_minievents.json", help="json file with event descriptions")
-    parser.add_argument("--output", default="speed_output.txt", help="output file for saving interface speed")
-    parser.add_argument("--imagename", default="speed.png", help="output image for network speed")
+    parser.add_argument("--output", default="./speed_output/speed_test.txt", help="output file for saving interface speed")
+    parser.add_argument("--imagename", default="./speed_output/speed_image", help="output image for network speed")
     args = parser.parse_args()
 
     setLogLevel('info')
 
     json_file = load_dash_minievents(args.events)
-    net = Minievents(topo=None, build = False, events_json=json_file['events'])
+    try:
+        signal.signal(signal.SIGINT, quit)
+        signal.signal(signal.SIGTERM, quit)
 
-    dnt = Dashnettopo(net, config_json=json_file['config'])
+        net = Minievents(topo=None, build = False, events_json=json_file['events'])
 
-    #start a new thread for checkout network speed
-    #TODO(michael):not sure. If this operation will efect network control(caused by GIL)
-    ts = Testspeed('test speed thread', dnt.get_output_intf(), args.output)
-    ts.setDaemon(True)
+        dnt = Dashnettopo(net, config_json=json_file['config'])
 
-    #start a new thread for checkout network speed
-    #TODO(michael):not sure. If this operation will efect network control(caused by GIL)
-    ds = Drawspeed('draw speed thread', args.imagename)
-    ds.setDaemon(True)
+        #start a new thread for checkout network speed
+        #TODO(michael):not sure. If this operation will efect network control(caused by GIL)
+        ts = Testspeed('test speed thread', dnt.get_output_intf(), args.output)
+        ts.setDaemon(True)
 
-    ts.start()
-    ds.start()
-    dnt.start()
+        #start a new thread for checkout network speed
+        #TODO(michael):not sure. If this operation will efect network control(caused by GIL)
+        ds = Drawspeed('draw speed thread', args.imagename)
+        ds.setDaemon(True)
+
+        ts.start()
+        ds.start()
+        dnt.start()
+    except Exception, e:
+        info(str(e) + '\n')
     info('dash net end###############\n')
