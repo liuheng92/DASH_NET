@@ -49,7 +49,7 @@ class Testspeed(threading.Thread):
             time.sleep(1)
             temp_time += 1
             pro = sh("ifconfig %s | grep bytes | awk '{ print $6 }' | awk -F ':' '{ print $2 }'" % self.intf_name)
-            if  float(pro) > float(pre) :
+            if  float(pro) >= float(pre) :
                 #unit Kbit/s
                 realtime_speed = (float(pro)-float(pre))*8/1024
                 realtime_q.put([temp_time, realtime_speed])
