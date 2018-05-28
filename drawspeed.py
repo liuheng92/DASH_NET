@@ -29,6 +29,10 @@ class Drawspeed(threading.Thread):
         info('draw_realtime_speed start\n')
         global shut_down_draw
         image_count = 0
+
+        # ax = plt.gca()
+        # ax.spines['bottom'].set_position(('data', 0))
+        # ax.spines['left'].set_position(('data', 0))
         while not shut_down_draw:
             if not realtime_q.empty():
                 [t, s] = realtime_q.get(block=True)
@@ -44,8 +48,10 @@ class Drawspeed(threading.Thread):
                 realtime_q_draw_x = []
                 realtime_q_draw_y = []
                 image_count += 1
+                plt.grid()
                 plt.savefig(self.imagename+str(image_count)+'.png')
             # plt.show()
+        plt.grid()
         plt.savefig(self.imagename+str(image_count)+'.png')
         plt.close()
 
