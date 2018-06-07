@@ -29,6 +29,7 @@ class Drawspeed(threading.Thread):
         info('draw_realtime_speed start\n')
         global shut_down_draw
         image_count = 0
+        plt.ion()
 
         # ax = plt.gca()
         # ax.spines['bottom'].set_position(('data', 0))
@@ -38,7 +39,6 @@ class Drawspeed(threading.Thread):
                 [t, s] = realtime_q.get(block=True)
                 realtime_q_draw_x.append(t)
                 realtime_q_draw_y.append(s)
-            plt.ion()
             plt.xlabel('time(seconds)')
             plt.ylabel('realtime speed(Kbps)')
             plt.plot(realtime_q_draw_x, realtime_q_draw_y, 'r')

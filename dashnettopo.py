@@ -195,6 +195,11 @@ class Dashnettopo( object ):
         #6.start dhcpd
         info('#6.start dhcpd\n')
         if self.test_dhcp():
+            if not get_shut_down_draw():
+                change_shut_down_draw()
+            if not get_shut_down_test():
+                change_shut_down_test()
+            time.sleep(2)
             exit(1)
         self.cmd('dhcpd %s' % node_intfname)
         #7.start minievents
