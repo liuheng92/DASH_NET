@@ -86,13 +86,15 @@ class Dashnettopo( object ):
             # print(lines)
         enter_key = ['\n', '\r\n', '\r']
         with open(dhcp_default, 'w') as f_w:
-            for line in lines:
-                if "INTERFACES=" in line:
+            for line_index in xrange(len(lines)):
+                #Debug:checkout enter_key
+                # print repr(line)
+                if "INTERFACES=" in lines[line_index]:
                     continue
                 #delete line if there are two "enter"
-                if (line in enter_key) and (lines[lines.index(line)+1] in enter_key):
+                if (lines[line_index] in enter_key) and (lines[line_index+1] in enter_key):
                     continue
-                f_w.write(line)
+                f_w.write(lines[line_index])
 
     def config_dhcp_intf(self):
         #edit /etc/default/isc-dhcp-server
