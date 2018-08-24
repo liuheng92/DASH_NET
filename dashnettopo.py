@@ -86,7 +86,7 @@ class Dashnettopo( object ):
             # print(lines)
         enter_key = ['\n', '\r\n', '\r']
         with open(dhcp_default, 'w') as f_w:
-            for line_index in xrange(len(lines)):
+            for line_index in xrange(len(lines)-1):
                 #Debug:checkout enter_key
                 # print repr(line)
                 if "INTERFACES=" in lines[line_index]:
