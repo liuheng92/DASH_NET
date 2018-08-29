@@ -32,8 +32,9 @@ https://www.jianshu.com/p/c0cecf819eab
 
 
 ### run
+**Before run，you should build a new directory named speed_output in DASH_NET root path for your own results**
 
-Just run from the project root directory:
+Then run from the project root directory:
 
   `sudo python dashnettopo.py`
 
@@ -43,11 +44,6 @@ one is about two networkcards name, in_intf represents the card which connect to
 or local net,(you should use ifconfig to checkout your networkcards name and modify the first part)
 other part is defining events. 
 The events define a network speed limit starting at second 0 (0.5Mbps bandwidth), and  modified at second 30 (3 Mbps bandwidth), at second 60 (1 Mbps bandwidth), second 90 (10Mbps and 100ms delay) and second 100 (100% loss) and second 110 (2Mbps bandwidth). The network is stopped at second 150. 
-
-### Check results
-
-The results are in speed_output folder.
-![image](https://github.com/liuheng92/DASH_NET/raw/master/speed_output/speed_image0.png)
 
 ## Json event file format and events
 
