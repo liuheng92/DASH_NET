@@ -32,9 +32,7 @@ https://www.jianshu.com/p/c0cecf819eab
 
 
 ### run
-**Before run，you should build a new directory named speed_output in DASH_NET root path for your own results**
-
-Then run from the project root directory:
+Just run from the project root directory:
 
   `sudo python dashnettopo.py`
 
