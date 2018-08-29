@@ -268,7 +268,7 @@ if __name__ == '__main__':
         #start network test
         if os.path.exists(args.output):
             shutil.rmtree(args.output)
-            os.mkdir(args.output)
+        os.mkdir(args.output)
         ts.start()
         ds.start()
         #start network control
